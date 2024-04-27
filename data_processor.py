@@ -193,4 +193,3 @@ class DataProcessor:
 
 if __name__ == '__main__':
     data_processor = DataProcessor('data/spa.txt')
-    pickle.dump(data_processor, open('data/processed.pkl', 'wb'))

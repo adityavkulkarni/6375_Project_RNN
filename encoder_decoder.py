@@ -164,11 +164,11 @@ class TransformerDecoder(layers.Layer):
 
 
 class Transformer:
-    def __init__(self, data):
+    def __init__(self, data_processor):
         embed_dim = 256
         latent_dim = 2048
         num_heads = 8
-        self.data_processor = data
+        self.data_processor = data_processor
         encoder_inputs = keras.Input(shape=(None,), dtype="int64", name="encoder_inputs")
         x = PositionalEmbedding(data_processor.sequence_length, data_processor.vocab_size, embed_dim)(encoder_inputs)
         encoder_outputs = TransformerEncoder(embed_dim, latent_dim, num_heads)(x)
