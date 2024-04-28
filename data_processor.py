@@ -127,12 +127,12 @@ class DataProcessor:
         num_train_samples = len(text_pairs) - 2 * num_val_samples
         train_pairs = text_pairs[:num_train_samples]
         val_pairs = text_pairs[num_train_samples: num_train_samples + num_val_samples]
-        test_pairs = text_pairs[num_train_samples + num_val_samples:]
+        self.test_pairs = text_pairs[num_train_samples + num_val_samples:]
 
         print(f"{len(text_pairs)} total pairs")
         print(f"{len(train_pairs)} training pairs")
         print(f"{len(val_pairs)} validation pairs")
-        print(f"{len(test_pairs)} test pairs")
+        print(f"{len(self.test_pairs)} test pairs")
 
         strip_chars = string.punctuation + "¿"
         strip_chars = strip_chars.replace("[", "")
