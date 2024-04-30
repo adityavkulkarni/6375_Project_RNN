@@ -12,7 +12,7 @@ if __name__ == '__main__':
               data_processor.spanish_vocab_size)
     rnn.train(data_processor.training_data_x,
               data_processor.training_data_y,
-              batch_size=1024, epochs=25, validation_split=0.2)
+              batch_size=1024, epochs=10, validation_split=0.2)
 
     d = "One day, I woke up to find that God had put hair on my face."
     d = data_processor.pad(data_processor.english_tk.texts_to_sequences([data_processor.preprocess_text(d)]))

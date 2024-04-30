@@ -199,7 +199,7 @@ class DataProcessorKeras:
 class DataProcessor:
     def __init__(self, data_path, sentence_count=None):
         with open('data/spa.txt') as f:
-            lines = f.read().split("\n")[:-1]
+            lines = f.read().split("\n")[::-1]
         english_sentences = []
         spanish_sentences = []
         for line in lines[::-1]:
