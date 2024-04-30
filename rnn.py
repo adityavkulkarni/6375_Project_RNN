@@ -23,7 +23,7 @@ class RNN:
         return self.model.evaluate(x, y, batch_size=batch_size)
 
     def predict(self, x):
-        self.emb_to_text(self.model.predict(x))
+        return self.emb_to_text(self.model.predict(x)[0])
 
     def emb_to_text(self, logits):
         index_to_words = {id: word for word, id in self.spanish_tokenizer.word_index.items()}
