@@ -1,4 +1,4 @@
-import pickle
+import collections
 import re
 import string
 import random
@@ -9,9 +9,11 @@ import pandas as pd
 import tensorflow.data as tf_data
 import tensorflow.strings as tf_strings
 from keras.layers import TextVectorization
+from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 
 
-"""class DataProcessor:
+class DataProcessorV1:
     def __init__(self, file_name):
         data = pd.read_csv(file_name,
                            delimiter="\t", encoding='utf-8',
@@ -21,8 +23,8 @@ from keras.layers import TextVectorization
         data['spanish'] = data['spanish'].apply(lambda x: x.lower())
         data['english'] = data['english'].apply(lambda x: re.sub("'", '', x))
         data['spanish'] = data['spanish'].apply(lambda x: re.sub("'", '', x))
-        sp_chars = set(string.punctuation)  # Set of all special characters
         # Remove all the special characters
+        sp_chars = set(string.punctuation)  # Set of all special characters
         data['english'] = data['english'].apply(lambda x: ''.join(ch for ch in x if ch not in sp_chars))
         data['spanish'] = data['spanish'].apply(lambda x: ''.join(ch for ch in x if ch not in sp_chars))
         data['spanish'] = data['spanish'].apply(lambda x: unidecode(x))
@@ -84,8 +86,10 @@ from keras.layers import TextVectorization
         self.spanish_vectors = []
         self.vector_map = []
         for i in range(len(data)):
-            self.english_vectors.append([self.english_vocab[re.sub('[^A-Za-z0-9 ]+', '', x)] for x in data.loc[i, 'english'].split(" ")])
-            self.spanish_vectors.append([self.spanish_vocab[re.sub('[^A-Za-z0-9 ]+', '', x)] for x in data.loc[i, 'spanish'].split(" ")])
+            self.english_vectors.append([self.english_vocab[re.sub('[^A-Za-z0-9 ]+', '', x)]
+                                         for x in data.loc[i, 'english'].split(" ")])
+            self.spanish_vectors.append([self.spanish_vocab[re.sub('[^A-Za-z0-9 ]+', '', x)]
+                                         for x in data.loc[i, 'spanish'].split(" ")])
             self.vec_len = max(max_span_len, max_eng_len)
         fill = [0] * self.vec_len
         result = [sublist + fill[len(sublist):] for sublist in self.english_vectors]
@@ -112,8 +116,9 @@ from keras.layers import TextVectorization
         else:
             results = " ".join([self.inverse_spanish_vocab[x] for x in vec])
         return results.replace("<pad>", "")
-"""
-class DataProcessor:
+
+
+class DataProcessorKeras:
     def __init__(self, data_path):
         with open(data_path) as f:
             lines = f.read().split("\n")[:-1]
@@ -189,6 +194,104 @@ class DataProcessor:
             },
             spa[:, 1:],
         )
+
+
+class DataProcessor:
+    def __init__(self, data_path, sentence_count=None):
+        with open('data/spa.txt') as f:
+            lines = f.read().split("\n")[:-1]
+        english_sentences = []
+        spanish_sentences = []
+        for line in lines[::-1]:
+            eng, spa = line.split("\t")
+            # spa = "[start] " + spa + " [end]"
+            english_sentences.append(self.preprocess_text(eng))
+            spanish_sentences.append(self.preprocess_text(spa))
+        english_sentences = english_sentences[:sentence_count]
+        spanish_sentences = spanish_sentences[:sentence_count]
+        print('Dataset Loaded')
+
+        preproc_english_sentences, self.english_tk = self.tokenize(english_sentences)
+        preproc_spanish_sentences, self.spanish_tk = self.tokenize(spanish_sentences)
+
+        preproc_english_sentences = self.pad(preproc_english_sentences)
+        preproc_spanish_sentences = self.pad(preproc_spanish_sentences)
+
+        # Keras's sparse_categorical_crossentropy function requires the labels to be in 3 dimensions
+        preproc_spanish_sentences = preproc_spanish_sentences.reshape(*preproc_spanish_sentences.shape, 1)
+
+        max_english_sequence_length = preproc_english_sentences.shape[1]
+        self.max_spanish_sequence_length = preproc_spanish_sentences.shape[1]
+        self.english_vocab_size = len(self.english_tk.word_index)
+        self.spanish_vocab_size = len(self.spanish_tk.word_index)
+
+        print('Data Preprocessed')
+        print("Max English sentence length:", max_english_sequence_length)
+        print("Max Spanish sentence length:", self.max_spanish_sequence_length)
+        print("English vocabulary size:", self.english_vocab_size)
+        print("Spanish vocabulary size:", self.spanish_vocab_size)
+        self.training_data_x = self.pad(preproc_english_sentences, self.max_spanish_sequence_length)
+        self.training_data_x = self.training_data_x.reshape((-1, preproc_spanish_sentences.shape[-2], 1))
+        self.training_data_y = preproc_spanish_sentences
+
+    @staticmethod
+    def preprocess_text(txt):
+        txt = txt.lower()
+        txt = re.sub("'", '', txt)
+        # Remove all the special characters
+        sp_chars = set(string.punctuation)  # Set of all special characters
+        txt = ''.join(ch for ch in txt if ch not in sp_chars)
+        txt = unidecode(txt)
+        # Remove all numbers from text
+        remove_digits = str.maketrans('', '', string.digits)
+        txt = txt.translate(remove_digits)
+        # Remove extra spaces
+        txt = txt.strip()
+        txt = re.sub(" +", " ", txt)
+        # data['spanish'] = data['spanish'].apply(lambda x: 'START_ ' + x + ' _END')
+
+        txt = str(txt).replace(u'\xa0', u' ')
+        # data['english'] = data['english'].apply(lambda x: re.sub('[^A-Za-z0-9 ]+', '', x))
+        return txt
+
+    @staticmethod
+    def tokenize(x):
+        """
+        Tokenize x
+        :param x: List of sentences/strings to be tokenized
+        :return: Tuple of (tokenized x data, tokenizer used to tokenize x)
+        """
+        x_tk = Tokenizer()
+        x_tk.fit_on_texts(x)
+        return x_tk.texts_to_sequences(x), x_tk
+
+    @staticmethod
+    def pad(x, length):
+        """
+        Pad x
+        :param x: List of sequences.
+        :param length: Length to pad the sequence to.  If None, use length of longest sequence in x.
+        :return: Padded numpy array of sequences
+        """
+        return pad_sequences(x, maxlen=length, padding='post')
+
+    def preprocess(self, x, y):
+        """
+        Preprocess x and y
+        :param x: Feature List of sentences
+        :param y: Label List of sentences
+        :return: Tuple of (Preprocessed x, Preprocessed y, x tokenizer, y tokenizer)
+        """
+        preprocess_x, x_tk = self.tokenize(x)
+        preprocess_y, y_tk = self.tokenize(y)
+
+        preprocess_x = self.pad(preprocess_x)
+        preprocess_y = self.pad(preprocess_y)
+
+        # Keras's sparse_categorical_crossentropy function requires the labels to be in 3 dimensions
+        preprocess_y = preprocess_y.reshape(*preprocess_y.shape, 1)
+
+        return preprocess_x, preprocess_y, x_tk, y_tk
 
 
 if __name__ == '__main__':
