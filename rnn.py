@@ -11,8 +11,7 @@ class RNN:
         inputs = Input(shape=input_shape[1:])
         #hidden_layer = GRU(output_sequence_length, return_sequences=True)(inputs)
         hidden_layer = SimpleRNN(output_sequence_length, return_sequences=True)(inputs)
-        #outputs = TimeDistributed(Dense(spanish_vocab_size + 1, activation='softmax'))(hidden_layer)
-        outputs = Dense(spanish_vocab_size + 1, activation='softmax')(hidden_layer)
+        outputs = TimeDistributed(Dense(spanish_vocab_size + 1, activation='softmax'))(hidden_layer)
         self.model = Model(inputs=inputs, outputs=outputs)
         self.model.compile(metrics=['accuracy'], loss=sparse_categorical_crossentropy)
 
@@ -20,13 +19,14 @@ class RNN:
         self.model.fit(x, y, epochs=epochs,
                        batch_size=batch_size, validation_split=validation_split)
         self.model.summary()
-        return self.model.evaluate(x, y, batch_size=batch_size)
+        # return self.model.evaluate(x, y, batch_size=batch_size)
 
     def predict(self, x):
         return self.emb_to_text(self.model.predict(x)[0])
 
-    def emb_to_text(self, logits):
-        index_to_words = {id: word for word, id in self.spanish_tokenizer.word_index.items()}
+    def emb_to_text(self, logits, tokenizer=None):
+        if tokenizer is None:
+            tokenizer = self.spanish_tokenizer
+        index_to_words = {id: word for word, id in tokenizer.word_index.items()}
         index_to_words[0] = '<PAD>'
-
         return ' '.join([index_to_words[prediction] for prediction in np.argmax(logits, 1)])

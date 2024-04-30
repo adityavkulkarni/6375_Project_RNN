@@ -12,9 +12,12 @@ if __name__ == '__main__':
               data_processor.spanish_vocab_size)
     rnn.train(data_processor.training_data_x,
               data_processor.training_data_y,
-              batch_size=1024, epochs=100, validation_split=0.2)
-    for t in data_processor.training_data_x:
-        print(rnn.predict(t))
+              batch_size=1024, epochs=25, validation_split=0.2)
+
+    d = data_processor.english_tk.texts_to_sequences([data_processor.preprocess_text("Trying to tranlsate")])
+    d = data_processor.pad(d, data_processor.max_spanish_sequence_length)
+    d = d.reshape((-1, data_processor.training_data_y.shape[-2], 1))
+    print(rnn.predict(d))
     """ 
     data_processor = DataProcessor('data/spa.txt')
     model = Transformer(data_processor)

@@ -233,6 +233,7 @@ class DataProcessor:
         self.training_data_x = self.pad(preproc_english_sentences, self.max_spanish_sequence_length)
         self.training_data_x = self.training_data_x.reshape((-1, preproc_spanish_sentences.shape[-2], 1))
         self.training_data_y = preproc_spanish_sentences
+        self.preproc_spanish_sentences = preproc_spanish_sentences
 
     @staticmethod
     def preprocess_text(txt):
