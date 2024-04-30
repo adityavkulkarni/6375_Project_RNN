@@ -1,7 +1,6 @@
 import numpy as np
-from keras.models import Model,Sequential
+from keras.models import Model
 from keras.layers import GRU, Input, Dense, TimeDistributed
-from keras.optimizers import Adam
 from keras.losses import sparse_categorical_crossentropy, BinaryCrossentropy
 
 
