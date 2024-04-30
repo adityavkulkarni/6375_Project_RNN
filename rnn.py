@@ -9,10 +9,10 @@ class RNN:
                  spanish_tokenizer, spanish_vocab_size, learning_rate=0.01):
         self.spanish_tokenizer = spanish_tokenizer
         inputs = Input(shape=input_shape[1:])
-        # hidden_layer = GRU(output_sequence_length, return_sequences=True)(inputs)
-        hidden_layer = SimpleRNN(output_sequence_length, return_sequences=True)(inputs)
-        # outputs = TimeDistributed(Dense(spanish_vocab_size + 1, activation='softmax'))(hidden_layer)
-        outputs = Dense(spanish_vocab_size + 1, activation='softmax')(hidden_layer)
+        hidden_layer = GRU(output_sequence_length, return_sequences=True)(inputs)
+        #hidden_layer = SimpleRNN(output_sequence_length, return_sequences=True)(inputs)
+        outputs = TimeDistributed(Dense(spanish_vocab_size + 1, activation='softmax'))(hidden_layer)
+        #outputs = Dense(spanish_vocab_size + 1, activation='softmax')(hidden_layer)
         self.model = Model(inputs=inputs, outputs=outputs)
         self.model.compile(metrics=['accuracy'], loss=sparse_categorical_crossentropy)
         self.model.summary()
