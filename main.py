@@ -14,7 +14,7 @@ if __name__ == '__main__':
               data_processor.training_data_y,
               batch_size=1024, epochs=25, validation_split=0.2)
 
-    d = "One day, I woke up to find that God had put hair on my face. I shaved it off. The next day, I found that God had put it back on my face, so I shaved it off again. On the third day, when I found that God had put hair back on my face again, I decided to let God have his way. That's why I have a beard."
+    d = "One day, I woke up to find that God had put hair on my face."
     d = data_processor.pad(data_processor.english_tk.texts_to_sequences([data_processor.preprocess_text(d)]))
     d = data_processor.pad(d, data_processor.max_spanish_sequence_length)
     d = d.reshape((-1, data_processor.training_data_y.shape[-2], 1))
