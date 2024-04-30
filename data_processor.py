@@ -199,7 +199,7 @@ class DataProcessorKeras:
 class DataProcessor:
     def __init__(self, data_path, sentence_count=None):
         with open('data/spa.txt') as f:
-            lines = f.read().split("\n")[::-1]
+            lines = f.read().split("\n")[::-1][:sentence_count]
         english_sentences = []
         spanish_sentences = []
         for line in lines[::-1]:
@@ -207,8 +207,8 @@ class DataProcessor:
             # spa = "[start] " + spa + " [end]"
             english_sentences.append(self.preprocess_text(eng))
             spanish_sentences.append(self.preprocess_text(spa))
-        english_sentences = english_sentences[:sentence_count]
-        spanish_sentences = spanish_sentences[:sentence_count]
+        english_sentences = english_sentences
+        spanish_sentences = spanish_sentences
         print('Dataset Loaded')
 
         preproc_english_sentences, self.english_tk = self.tokenize(english_sentences)

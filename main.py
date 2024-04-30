@@ -18,7 +18,7 @@ if __name__ == '__main__':
     d = data_processor.pad(data_processor.english_tk.texts_to_sequences([data_processor.preprocess_text(d)]))
     d = data_processor.pad(d, data_processor.max_spanish_sequence_length)
     d = d.reshape((-1, data_processor.training_data_y.shape[-2], 1))
-    print(rnn.predict(d).replace("<PAD>", ""))
+    print(rnn.predict(data_processor.training_data_x[:1]).replace("<PAD>", ""))
     """ 
     data_processor = DataProcessor('data/spa.txt')
     model = Transformer(data_processor)
