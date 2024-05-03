@@ -1,4 +1,5 @@
 import numpy as np
+from keras.src.losses import SparseCategoricalCrossentropy
 
 
 def softmax(x):
@@ -12,8 +13,9 @@ def softmax_grad(z):
 
 
 def sparse_categorical_crossentropy(y_true, y_pred):
-    loss = []
+    """loss = []
     for i in range(len(y_true)):
         loss.append(y_pred[i][y_true[i]])
-    loss = np.array(loss)
-    return loss
+    loss = np.array(loss)"""
+    scce = SparseCategoricalCrossentropy()
+    return scce(y_true, y_pred)
