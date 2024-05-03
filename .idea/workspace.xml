@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37fbfac1-5c51-4fdf-a9a8-e886a605508c" name="Changes" comment="Added keras RNN and dataprocessor">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encoder_decoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/english-to-hindi-neural-machine-translation.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/rnn.py" afterDir="false" />
-    </list>
+    <list default="true" id="37fbfac1-5c51-4fdf-a9a8-e886a605508c" name="Changes" comment="Added keras RNN and dataprocessor" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -124,7 +117,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="rnn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="rnn_benchmark" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="6375_project" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -138,7 +131,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rnn.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rnn_benchmark.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -151,7 +144,7 @@
       <list>
         <item itemvalue="Python.data_processor" />
         <item itemvalue="Python.encoder_decoder" />
-        <item itemvalue="Python.rnn" />
+        <item itemvalue="Python.rnn_benchmark" />
       </list>
     </recent_temporary>
   </component>
@@ -193,7 +186,7 @@
       <workItem from="1714330776407" duration="954000" />
       <workItem from="1714438429948" duration="1153000" />
       <workItem from="1714440403738" duration="15486000" />
-      <workItem from="1714739790837" duration="1740000" />
+      <workItem from="1714739790837" duration="3454000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -347,7 +340,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714495104947</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Added keras RNN and dataprocessor">
+      <option name="closed" value="true" />
+      <created>1714743250937</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1714743250937</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -385,14 +386,9 @@
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/rnn.py</url>
-          <line>7</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>4</line>
-          <option name="timeStamp" value="45" />
+          <url>file://$PROJECT_DIR$/rnn_benchmark.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -408,6 +404,6 @@
     <SUITE FILE_PATH="coverage/6375_project$data_processor.coverage" NAME="data_processor Coverage Results" MODIFIED="1714190958326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/6375_project$rnn.coverage" NAME="rnn Coverage Results" MODIFIED="1713664557181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/6375_project$encoder_decoder.coverage" NAME="encoder_decoder Coverage Results" MODIFIED="1714186034145" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/6375_project$main.coverage" NAME="main Coverage Results" MODIFIED="1714741525262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/6375_project$main.coverage" NAME="main Coverage Results" MODIFIED="1714743194396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
