@@ -35,7 +35,7 @@ class RNN:
         s = 0
         for i in range(len(x)):
             _y = self.predict(x[i])
-            s += utils.sparse_categorical_crossentropy(y[i], _y).sum()
+            s += utils.sparse_categorical_crossentropy(y[i], _y)
         return s
 
     @staticmethod
