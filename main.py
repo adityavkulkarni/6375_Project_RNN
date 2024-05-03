@@ -1,4 +1,5 @@
 from data_processor import DataProcessor
+from model.rnn import RNN
 from rnn_benchmark import RNNBenchmark
 
 if __name__ == '__main__':
@@ -6,6 +7,10 @@ if __name__ == '__main__':
     index = 10
     eng_sentence = data_processor.english_sentences[index]
     spa_sentence = data_processor.spanish_sentences[index]
+
+    rnn = RNN(input_shape=(data_processor.max_sentence_length, 1),
+              output_shape=data_processor.spanish_vocab_len)
+    rnn.train(data_processor.eng_pad_sentence, data_processor.spa_pad_sentence)
 
     rnn_benchmark = RNNBenchmark(input_shape=(data_processor.max_sentence_length, 1),
                                  output_shape=data_processor.spanish_vocab_len)

@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37fbfac1-5c51-4fdf-a9a8-e886a605508c" name="Changes" comment="Added keras RNN and dataprocessor" />
+    <list default="true" id="37fbfac1-5c51-4fdf-a9a8-e886a605508c" name="Changes" comment="Added RNN model structure">
+      <change afterPath="$PROJECT_DIR$/model/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/layers/dense.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/layers/dense.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/layers/input.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/layers/input.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/layers/recurrent.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/layers/recurrent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/rnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/rnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rnn_benchmark.py" beforeDir="false" afterPath="$PROJECT_DIR$/rnn_benchmark.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,24 +38,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.data_processor.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.encoder_decoder.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.rnn.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.data_processor.executor": "Debug",
+    "Python.encoder_decoder.executor": "Run",
+    "Python.main.executor": "Debug",
+    "Python.rnn.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python.main">
     <configuration name="data_processor" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="6375_project" />
@@ -186,7 +195,7 @@
       <workItem from="1714330776407" duration="954000" />
       <workItem from="1714438429948" duration="1153000" />
       <workItem from="1714440403738" duration="15486000" />
-      <workItem from="1714739790837" duration="3454000" />
+      <workItem from="1714739790837" duration="9484000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -348,7 +357,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714743250937</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Added RNN model structure">
+      <option name="closed" value="true" />
+      <created>1714743616097</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1714743616097</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,7 +387,8 @@
     <MESSAGE value="Added keras model" />
     <MESSAGE value="Added requirements.txt" />
     <MESSAGE value="Added keras RNN and dataprocessor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added keras RNN and dataprocessor" />
+    <MESSAGE value="Added RNN model structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added RNN model structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -387,8 +405,38 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/rnn_benchmark.py</url>
-          <line>20</line>
+          <line>24</line>
           <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/rnn_benchmark.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/rnn_benchmark.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>12</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model/rnn.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model/rnn.py</url>
+          <line>42</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model/rnn.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -404,6 +452,6 @@
     <SUITE FILE_PATH="coverage/6375_project$data_processor.coverage" NAME="data_processor Coverage Results" MODIFIED="1714190958326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/6375_project$rnn.coverage" NAME="rnn Coverage Results" MODIFIED="1713664557181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/6375_project$encoder_decoder.coverage" NAME="encoder_decoder Coverage Results" MODIFIED="1714186034145" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/6375_project$main.coverage" NAME="main Coverage Results" MODIFIED="1714743194396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/6375_project$main.coverage" NAME="main Coverage Results" MODIFIED="1714754339231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
