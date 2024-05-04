@@ -4,9 +4,7 @@ class Input:
         self.output_size = input_size
 
     def forward(self, x):
-        if x.shape == self.input_size:
-            return x
-        raise ValueError(f'Input shape {x.shape} does not match {self.input_size}')
+        return x
 
     def backward(self, grad):
         pass

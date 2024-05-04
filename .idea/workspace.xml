@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37fbfac1-5c51-4fdf-a9a8-e886a605508c" name="Changes" comment="Added RNN model structure">
-      <change afterPath="$PROJECT_DIR$/model/utils.py" afterDir="false" />
+    <list default="true" id="37fbfac1-5c51-4fdf-a9a8-e886a605508c" name="Changes" comment="Updated loss calculations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/layers/dense.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/layers/dense.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/layers/input.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/layers/input.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/layers/recurrent.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/layers/recurrent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/rnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/rnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rnn_benchmark.py" beforeDir="false" afterPath="$PROJECT_DIR$/rnn_benchmark.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +42,7 @@
   "keyToString": {
     "Python.data_processor.executor": "Debug",
     "Python.encoder_decoder.executor": "Run",
-    "Python.main.executor": "Debug",
+    "Python.main.executor": "Run",
     "Python.rnn.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -195,7 +195,7 @@
       <workItem from="1714330776407" duration="954000" />
       <workItem from="1714438429948" duration="1153000" />
       <workItem from="1714440403738" duration="15486000" />
-      <workItem from="1714739790837" duration="9484000" />
+      <workItem from="1714739790837" duration="24158000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -365,7 +365,31 @@
       <option name="project" value="LOCAL" />
       <updated>1714743616097</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Added RNN model structure">
+      <option name="closed" value="true" />
+      <created>1714754530444</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1714754530444</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Updated loss calculations">
+      <option name="closed" value="true" />
+      <created>1714778576041</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1714778576042</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Updated loss calculations">
+      <option name="closed" value="true" />
+      <created>1714778586327</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1714778586327</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,7 +412,8 @@
     <MESSAGE value="Added requirements.txt" />
     <MESSAGE value="Added keras RNN and dataprocessor" />
     <MESSAGE value="Added RNN model structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added RNN model structure" />
+    <MESSAGE value="Updated loss calculations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated loss calculations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -405,7 +430,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/rnn_benchmark.py</url>
-          <line>24</line>
+          <line>23</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -415,28 +440,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/rnn_benchmark.py</url>
-          <line>21</line>
+          <line>20</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>12</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/model/rnn.py</url>
-          <line>19</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model/rnn.py</url>
-          <line>42</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model/rnn.py</url>
-          <line>44</line>
-          <option name="timeStamp" value="57" />
+          <line>28</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -452,6 +462,6 @@
     <SUITE FILE_PATH="coverage/6375_project$data_processor.coverage" NAME="data_processor Coverage Results" MODIFIED="1714190958326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/6375_project$rnn.coverage" NAME="rnn Coverage Results" MODIFIED="1713664557181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/6375_project$encoder_decoder.coverage" NAME="encoder_decoder Coverage Results" MODIFIED="1714186034145" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/6375_project$main.coverage" NAME="main Coverage Results" MODIFIED="1714754339231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/6375_project$main.coverage" NAME="main Coverage Results" MODIFIED="1714851034092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

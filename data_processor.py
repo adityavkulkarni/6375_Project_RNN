@@ -13,7 +13,7 @@ class DataProcessor:
 
         raw_data = list(set(raw.split('\n')))
         pairs = [sentence.split('\t') for sentence in raw_data]
-        pairs = pairs[offset: offset + sentence_count + 1]
+        pairs = pairs[offset: offset + sentence_count]
 
         self.english_sentences = [re.sub('[^A-Za-z0-9 ]+', '', pair[0].lower()) for pair in pairs]
         self.spanish_sentences = [re.sub('[^A-Za-z0-9 ]+', '', pair[1].lower()) for pair in pairs]
