@@ -1,4 +1,3 @@
-import random
 import re
 
 import numpy as np
@@ -44,7 +43,8 @@ class DataProcessor:
     def logits_to_sentence(self, logits):
         index_to_words = {idx: word for word, idx in self.spa_text_tokenizer.word_index.items()}
         index_to_words[0] = '<empty>'
-        return ' '.join([index_to_words[prediction] for prediction in np.argmax(logits, 1)]).replace(index_to_words[0], '')
+        return ' '.join([index_to_words[prediction]
+                         for prediction in np.argmax(logits, 1)]).replace(index_to_words[0], '')
 
 
 if __name__ == '__main__':

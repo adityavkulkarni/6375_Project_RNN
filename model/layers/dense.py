@@ -1,15 +1,13 @@
 import numpy as np
-import tensorflow as tf
 from model import utils
 
 
 class Dense:
-    def __init__(self, input_size, output_size, learning_rate=0.01):
+    def __init__(self, input_size, output_size):
         self.input = None
         self.z = None
         self.input_size = input_size
         self.output_size = output_size
-        self.learning_rate = learning_rate
         self.weights = np.random.rand(input_size[1], output_size)
         self.biases = np.zeros(output_size)
 
@@ -19,7 +17,7 @@ class Dense:
         self.z = utils.softmax(output)
         return self.z
 
-    def backward(self, grad):
+    def backward(self, grad, learning_rate=0.01):
         # Calculate gradients for weights and biases
         weights_error = np.dot(self.input.T, grad)
         bias_error = np.sum(grad, axis=0)
@@ -27,6 +25,6 @@ class Dense:
         input_error = np.dot(grad, self.weights.T)
 
         # update parameters
-        self.weights -= self.learning_rate * weights_error
-        self.biases -= self.learning_rate * bias_error
+        self.weights -= learning_rate * weights_error
+        self.biases -= learning_rate * bias_error
         return input_error

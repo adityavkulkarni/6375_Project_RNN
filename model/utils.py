@@ -1,19 +1,14 @@
 import numpy as np
-from keras.src.losses import SparseCategoricalCrossentropy
-import tensorflow as tf
 
 
 def softmax(x):
     s = np.max(x, axis=1)
-    s = s[:, np.newaxis]  # necessary step to do broadcasting
+    s = s[:, np.newaxis]
     e_x = np.exp(x - s)
     div = np.sum(e_x, axis=1)
-    div = div[:, np.newaxis]  # dito
+    div = div[:, np.newaxis]
     return e_x / div
 
-
-def softmax_derivative(y_pred):
-    return  y_pred * (1 - y_pred)
 
 def sparse_categorical_crossentropy(y_true, y_pred):
     y_pred1 = np.clip(y_pred, 1e-7, 1 - 1e-7)

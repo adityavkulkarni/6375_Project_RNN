@@ -1,5 +1,3 @@
-import numpy as np
-import tensorflow as tf
 from model.layers.input import Input
 from model.layers.recurrent import Recurrent
 from model.layers.dense import Dense
@@ -12,7 +10,7 @@ class RNN:
         # self.recurrent_layer = Recurrent(output_shape)
         self.dense = Dense(input_shape, output_shape)
 
-    def train(self, x, y, epochs=100):
+    def train(self, x, y, epochs=100, learning_rate=0.01):
         # print(f"Loss: {self.loss(x, y)}")
         for epoch in range(epochs):
             l_epoch = 0
@@ -23,7 +21,7 @@ class RNN:
                 # dw = self.__gradient__(y[i], _y)
                 l_epoch += utils.sparse_categorical_crossentropy(y[i], _y)
                 dw = utils.sparse_categorical_crossentropy_gradient(y[i], _y)
-                dw_3 = self.dense.backward(dw)
+                dw_3 = self.dense.backward(dw, learning_rate)
                 # dw_2 = self.recurrent_layer.backward(dw_3)
                 self.input_layer.backward(dw_3)
             print(f"epoch: {epoch + 1} Loss: {l_epoch}")
