@@ -19,12 +19,12 @@ class Dense:
 
     def backward(self, grad, learning_rate=0.01):
         # Calculate gradients for weights and biases
-        weights_error = np.dot(self.input.T, grad)
-        bias_error = np.sum(grad, axis=0)
+        dw = np.dot(self.input.T, grad)
+        db = np.sum(grad, axis=0)
         # Calculate input error for the next layer
-        input_error = np.dot(grad, self.weights.T)
+        d_next = np.dot(grad, self.weights.T)
 
         # update parameters
-        self.weights -= learning_rate * weights_error
-        self.biases -= learning_rate * bias_error
-        return input_error
+        self.weights -= learning_rate * dw
+        self.biases -= learning_rate * db
+        return d_next

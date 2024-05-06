@@ -31,8 +31,6 @@ class Recurrent:
             dh = grad[t] + dh_next
             dtanh = (1 - self.h[t + 1] ** 2) * dh
 
-            dtanh = np.clip(dtanh, -1, 1)
-
             dWx += np.dot(dtanh, self.inputs[t].T)
             dWh += np.dot(dtanh, self.h[t].T)
             db += dtanh
@@ -40,3 +38,4 @@ class Recurrent:
         self.weights_x -= learning_rate * dWx
         self.weights_h -= learning_rate * dWh
         self.b -= learning_rate * db
+        return dh_next
