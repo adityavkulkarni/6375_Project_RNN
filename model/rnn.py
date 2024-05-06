@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from keras.src.losses import SparseCategoricalCrossentropy
-from keras.src.metrics import Accuracy
+from keras.src.metrics import SparseCategoricalAccuracy
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
@@ -30,7 +30,7 @@ class RNN:
                 dw_3 = self.dense.backward(dw, learning_rate)
                 self.recurrent_layer1.backward(dw_3, learning_rate)
             _y = []
-            m = Accuracy()
+            m = SparseCategoricalAccuracy()
             for i in range(len(X_test)):
                 _y.append(self.predict(X_test[i]))
                 m.update_state(y_test[i], np.argmax(_y[i], axis=1))

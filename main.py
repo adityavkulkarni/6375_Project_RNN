@@ -12,14 +12,14 @@ DATA_URL = "https://github.com/adityavkulkarni/6375_Project_RNN/raw/master/data/
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Script to train a neural network.')
     parser.add_argument('--learning-rate', type=float,
-                        help='Learning rate for model', default=0.00001)
+                        help='Learning rate for model', default=0.001)
     parser.add_argument('--epochs', type=int,
                         help='Epochs for model', default=50)
     args = parser.parse_args()
 
     if not os.path.exists(DATA_PATH):
         urllib.request.urlretrieve(DATA_URL, DATA_PATH)
-    data_processor = DataProcessor(DATA_PATH, sentence_count=10000)
+    data_processor = DataProcessor(DATA_PATH, sentence_count=100)
     index = 10
     eng_sentence = data_processor.english_sentences[index]
     spa_sentence = data_processor.spanish_sentences[index]
