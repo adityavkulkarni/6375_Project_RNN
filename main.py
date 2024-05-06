@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print(f"English sentence: {eng_sentence}")
     print(f"Spanish sentence: {spa_sentence}")
     print(f"Predicted sentence: "
-          f"{data_processor.logits_to_sentence(rnn.predict(data_processor.eng_pad_sentence[index:index + 1])[0])}")
+          f"{data_processor.logits_to_sentence(rnn.predict(data_processor.eng_pad_sentence[index]))}")
 
     rnn_benchmark = RNNBenchmark(input_shape=(data_processor.max_sentence_length, 1),
                                  output_shape=data_processor.spanish_vocab_len)

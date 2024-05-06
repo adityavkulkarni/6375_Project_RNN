@@ -26,6 +26,7 @@ def sparse_categorical_crossentropy_gradient(y_true, y_pred):
     gradients = y_pred1 - y_true1
     return gradients
 
+
 def sparse_categorical_accuracy(y_true, y_pred):
     y_pred_classes = np.argmax(y_pred, axis=1)
     correct_predictions = np.equal(y_true, y_pred_classes)

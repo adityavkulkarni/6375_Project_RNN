@@ -9,7 +9,7 @@ class DataProcessor:
     def __init__(self, data_file, sentence_count=1000, offset=20000):
         with open(data_file, "r", encoding='utf-8') as f:
             raw = f.read()
-
+        self.max_sentence_length = 10
         raw_data = list(set(raw.split('\n')))
         pairs = [sentence.split('\t') for sentence in raw_data]
         pairs = pairs[offset: offset + sentence_count]
@@ -19,7 +19,7 @@ class DataProcessor:
 
         spa_text_tokenized, self.spa_text_tokenizer = self.tokenize(self.spanish_sentences)
         eng_text_tokenized, self.eng_text_tokenizer = self.tokenize(self.english_sentences)
-        self.max_sentence_length = max(len(max(spa_text_tokenized, key=len)), len(max(eng_text_tokenized, key=len)))
+        # self.max_sentence_length = max(len(max(spa_text_tokenized, key=len)), len(max(eng_text_tokenized, key=len)))
         # print('Maximum length spanish sentence: {}'.format(len(max(spa_text_tokenized, key=len))))
         # print('Maximum length english sentence: {}'.format(len(max(eng_text_tokenized, key=len))))
 
@@ -44,7 +44,7 @@ class DataProcessor:
         index_to_words = {idx: word for word, idx in self.spa_text_tokenizer.word_index.items()}
         index_to_words[0] = '<empty>'
         return ' '.join([index_to_words[prediction]
-                         for prediction in np.argmax(logits, 1)]).replace(index_to_words[0], '')
+                         for prediction in np.argmax(logits, axis=1)]).replace(index_to_words[0], '')
 
 
 if __name__ == '__main__':
