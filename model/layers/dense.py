@@ -8,7 +8,7 @@ class Dense:
         self.z = None
         self.input_size = input_size
         self.output_size = output_size
-        self.weights = np.random.rand(input_size[1], output_size)
+        self.weights = np.random.randn(input_size[1], output_size) * np.sqrt(2.0 / input_size[1])
         self.biases = np.zeros(output_size)
 
     def forward(self, x):

@@ -3,7 +3,7 @@ from model.rnn import RNN
 from rnn_benchmark import RNNBenchmark
 
 if __name__ == '__main__':
-    data_processor = DataProcessor('data/spa.txt')
+    data_processor = DataProcessor('data/spa.txt', sentence_count=1000)
     index = 10
     eng_sentence = data_processor.english_sentences[index]
     spa_sentence = data_processor.spanish_sentences[index]

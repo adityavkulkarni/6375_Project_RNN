@@ -7,11 +7,11 @@ from keras.losses import sparse_categorical_crossentropy
 class RNNBenchmark:
     def __init__(self, input_shape, output_shape):
         input_layer = Input(input_shape, name='InputLayer')
-        hidden_layer = SimpleRNN(output_shape, return_sequences=True, name='RNNLayer1')(input_layer)
-        output_layer = Dense(output_shape, activation='softmax', name='Dense1')(hidden_layer)
+        # hidden_layer = SimpleRNN(output_shape, return_sequences=True, name='RNNLayer1')(input_layer)
+        output_layer = Dense(output_shape, activation='softmax', name='Dense1')(input_layer)
         self._model = Model(input_layer, output_layer)
         self._model.compile(loss=sparse_categorical_crossentropy,
-                            metrics=['accuracy'])
+                            metrics=['sparse_categorical_accuracy'])
         self._model.summary()
         """keras.utils.plot_model(
             self._model, show_shapes=True, show_layer_names=True,
