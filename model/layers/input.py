@@ -5,6 +5,3 @@ class Input:
 
     def forward(self, x):
         return x
-
-    def backward(self, grad):
-        pass

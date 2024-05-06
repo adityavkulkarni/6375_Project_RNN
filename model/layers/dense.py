@@ -18,13 +18,10 @@ class Dense:
         return self.z
 
     def backward(self, grad, learning_rate=0.01):
-        # Calculate gradients for weights and biases
         dw = np.dot(self.input.T, grad)
         db = np.sum(grad, axis=0)
-        # Calculate input error for the next layer
         d_next = np.dot(grad, self.weights.T)
 
-        # update parameters
         self.weights -= learning_rate * dw
         self.biases -= learning_rate * db
         return d_next

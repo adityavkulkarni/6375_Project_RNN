@@ -15,8 +15,6 @@ def sparse_categorical_crossentropy(y_true, y_pred):
     y_true1 = np.eye(y_pred.shape[1])[y_true.reshape(-1)]
     cross_entropy = -np.sum(y_true1 * np.log(y_pred1), axis=-1)
     cross_entropy = np.mean(cross_entropy)
-    # scce = SparseCategoricalCrossentropy()
-    # err = scce(y_true, y_pred)
     return cross_entropy
 
 
