@@ -1,0 +1,376 @@
+import argparse
+import os
+import urllib.request
+
+from data_processor import DataProcessor
+from model.rnn import RNN
+from rnn_benchmark import RNNBenchmark
+
+DATA_PATH = "data/spa.txt"
+DATA_URL = "https://github.com/adityavkulkarni/6375_Project_RNN/raw/master/data/spa.txt"
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Script to train a neural network.')
+    parser.add_argument('--learning-rate', type=float,
+                        help='Learning rate for model', default=0.001)
+    parser.add_argument('--epochs', type=int,
+                        help='Epochs for model', default=50)
+    parser.add_argument('--samples', type=int,
+                        help='Number of sentences for training', default=3000)
+    args = parser.parse_args()
+
+    if not os.path.exists(DATA_PATH):
+        urllib.request.urlretrieve(DATA_URL, DATA_PATH)
+    data_processor = DataProcessor(DATA_PATH, sentence_count=args.samples)
+    index = 10
+    eng_sentence = data_processor.english_sentences[index]
+    spa_sentence = data_processor.spanish_sentences[index]
+
+    rnn = RNN(input_shape=(data_processor.max_sentence_length, 1),
+              output_shape=data_processor.spanish_vocab_len)
+    rnn.train(data_processor.eng_pad_sentence,
+              data_processor.spa_pad_sentence,
+              epochs=args.epochs, learning_rate=args.learning_rate)
+
+    print(f"English sentence: {eng_sentence}")
+    print(f"Spanish sentence: {spa_sentence}")
+    print(f"Predicted sentence: "
+          f"{data_processor.logits_to_sentence(rnn.predict(data_processor.eng_pad_sentence[index]))}")
+
+    rnn_benchmark = RNNBenchmark(input_shape=(data_processor.max_sentence_length, 1),
+                                 output_shape=data_processor.spanish_vocab_len)
+    rnn_benchmark.train(data_processor.eng_pad_sentence, data_processor.spa_pad_sentence,
+                        epochs=args.epochs)
+    print(f"English sentence: {eng_sentence}")
+    print(f"Spanish sentence: {spa_sentence}")
+    print(f"Predicted sentence: "
+          f"{data_processor.logits_to_sentence(rnn_benchmark.predict(data_processor.eng_pad_sentence[index:index + 1]))}")
+
+import re
+
+import numpy as np
+from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+
+
+class DataProcessor:
+    def __init__(self, data_file, sentence_count=1000):
+        """
+        Class for data preparation, prerprocessing and handling of the data.
+        :param data_file: file containing sentence pairs.
+        :param sentence_count: number of sentence pairs to load
+        """
+        with open(data_file, "r", encoding='utf-8') as f:
+            raw = f.read()
+        self.max_sentence_length = 10
+        raw_data = list(set(raw.split('\n')))
+        pairs = [sentence.split('\t') for sentence in raw_data]
+        pairs = [[x[0], x[1]] for x in pairs if 4 < len(x[0].split()) < 12]
+        pairs = sorted(pairs, key=lambda x: len(x[1]))
+        pairs = pairs[:sentence_count]
+
+        self.english_sentences = [re.sub('[^A-Za-z0-9 ]+', '', pair[0].lower()) for pair in pairs]
+        self.spanish_sentences = [re.sub('[^A-Za-z0-9 ]+', '', pair[1].lower()) for pair in pairs]
+
+        spa_text_tokenized, self.spa_text_tokenizer = self.tokenize(self.spanish_sentences)
+        eng_text_tokenized, self.eng_text_tokenizer = self.tokenize(self.english_sentences)
+
+        self.spanish_vocab_len = len(self.spa_text_tokenizer.word_index) + 1
+        self.english_vocab_len = len(self.eng_text_tokenizer.word_index) + 1
+
+        spa_pad_sentence = pad_sequences(spa_text_tokenized, self.max_sentence_length, padding="post")
+        eng_pad_sentence = pad_sequences(eng_text_tokenized, self.max_sentence_length, padding="post")
+
+        self.spa_pad_sentence = spa_pad_sentence.reshape(*spa_pad_sentence.shape, 1)
+        self.eng_pad_sentence = eng_pad_sentence.reshape(*eng_pad_sentence.shape, 1)
+
+    @staticmethod
+    def tokenize(sentences):
+        """
+        This function tokenizes sentences.
+        :param sentences:
+        :return: tokenized sentences and tokenizer object
+        """
+        text_tokenizer = Tokenizer()
+        text_tokenizer.fit_on_texts(sentences)
+        return text_tokenizer.texts_to_sequences(sentences), text_tokenizer
+
+    def logits_to_sentence(self, logits):
+        """
+        Converts a logit vector to a sentence.
+        :param logits: output logits
+        :return: string
+        """
+        index_to_words = {idx: word for word, idx in self.spa_text_tokenizer.word_index.items()}
+        index_to_words[0] = '<empty>'
+        return ' '.join([index_to_words[prediction]
+                         for prediction in np.argmax(logits, axis=1)]).replace(index_to_words[0], '')
+
+
+if __name__ == '__main__':
+    data_processor = DataProcessor('data/spa.txt')
+
+import numpy as np
+import pandas as pd
+from keras.src.losses import SparseCategoricalCrossentropy
+from keras.src.metrics import SparseCategoricalAccuracy
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+
+from model.layers.input import Input
+from model.layers.recurrent import Recurrent
+from model.layers.dense import Dense
+from model import utils
+
+
+class RNN:
+    def __init__(self, input_shape, output_shape):
+        """
+        RNN model
+        :param input_shape:
+        :param output_shape:
+        """
+        self.input_layer = Input(input_shape)
+        self.recurrent_layer1 = Recurrent(input_shape, input_shape)
+        self.dense = Dense(input_shape, output_shape)
+
+    def train(self, x, y, epochs=10, learning_rate=0.0001):
+        """
+        Method for training model
+        :param x: input tokens
+        :param y: targets
+        :param epochs:
+        :param learning_rate:
+        :return:
+        """
+        graph = []
+        X_train, X_test, y, y_test = train_test_split(x, y, test_size=0.25, random_state=42)
+        for epoch in range(epochs):
+            y_tr = []
+            for i in range(len(X_train)):
+                # Forward Pass
+                _y = self.predict(X_train[i])
+                y_tr.append(_y)
+                # Backward Pass
+                dw = utils.sparse_categorical_crossentropy_gradient(y[i], _y)
+                dw_3 = self.dense.backward(dw, learning_rate)
+                self.recurrent_layer1.backward(dw_3, learning_rate)
+            _y = []
+            m = SparseCategoricalAccuracy()
+            for i in range(len(X_test)):
+                _y.append(self.predict(X_test[i]))
+                m.update_state(y_test[i], np.argmax(_y[i], axis=1))
+            _y = np.array(_y)
+            y_tr = np.array(y_tr)
+            scce = SparseCategoricalCrossentropy()
+            scce_tr = SparseCategoricalCrossentropy()
+            err = scce(y_test, _y)
+            err_tr = scce_tr(y, y_tr)
+            acc = m.result()
+            graph.append((epoch+1, float(err_tr), float(err)))
+            print(f"epoch: {epoch + 1} Loss: {err}")
+        print(f"Accuracy: {acc}")
+        df = pd.DataFrame(graph, columns=["Epochs", "Training loss", "Validation loss"])
+        df.to_csv(f'results/rnn_{learning_rate}_{epochs}.csv', index=False)
+        fig1 = plt.figure(figsize=(12, 7))
+        ax = fig1.add_subplot(1, 1, 1)
+        ax.plot(df["Epochs"], df["Training loss"])
+        ax.plot(df["Epochs"], df["Validation loss"])
+        plt.legend(["Training Loss", "Validation Loss"])
+        plt.title("Loss vs Epochs")
+        txt = f"Learning Rate: {learning_rate}"
+        plt.figtext(0.5, 0.01,
+                    txt + "\nFinal Loss:{:.2f}".format(graph[-1][1]),
+                    wrap=True, horizontalalignment='center', fontsize=10)
+        fig1.savefig(f"results/loss_{learning_rate}_{epochs}.png")
+
+    def predict(self, x):
+        """
+        Method for predicting results
+        :param x: tokens
+        :return: logits prediction
+        """
+        y_1 = self.input_layer.forward(x)
+        y_2 = self.recurrent_layer1.forward(y_1)
+        y_3 = self.dense.forward(y_2)
+        return y_3
+
+
+import numpy as np
+
+
+def softmax(x):
+    """
+    Compute softmax values for each sets of scores in x.
+    :param x:
+    :return:
+    """
+    s = np.max(x, axis=1)
+    s = s[:, np.newaxis]
+    e_x = np.exp(x - s)
+    div = np.sum(e_x, axis=1)
+    div = div[:, np.newaxis]
+    return e_x / div
+
+
+def sparse_categorical_crossentropy(y_true, y_pred):
+    """
+    Compute sparse categorical crossentropy loss.
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
+    y_pred1 = np.clip(y_pred, 1e-7, 1 - 1e-7)
+    y_true1 = np.eye(y_pred.shape[1])[y_true.reshape(-1)]
+    cross_entropy = -np.sum(y_true1 * np.log(y_pred1), axis=-1)
+    cross_entropy = np.mean(cross_entropy)
+    return cross_entropy
+
+
+def sparse_categorical_crossentropy_gradient(y_true, y_pred):
+    """
+    Compute gradient of sparse categorical crossentropy loss.
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
+    y_pred1 = np.clip(y_pred, 1e-7, 1 - 1e-7)
+    y_true1 = np.eye(y_pred.shape[1])[y_true.reshape(-1)]
+    gradients = y_pred1 - y_true1
+    return gradients
+
+
+def sparse_categorical_accuracy(y_true, y_pred):
+    """
+    Compute sparse categorical accuracy.
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
+    y_pred_classes = np.argmax(y_pred, axis=1)
+    correct_predictions = np.equal(y_true, y_pred_classes)
+    accuracy = np.mean(correct_predictions)
+    return accuracy
+
+
+class Input:
+    def __init__(self, input_size):
+        """
+        Class for input layer
+        :param input_size:
+        """
+        self.input_size = input_size
+        self.output_size = input_size
+
+    @staticmethod
+    def forward(x):
+        """
+        Forward pass for input layer
+        :param x: input tokens
+        :return: same input tokens
+        """
+        return x
+
+
+import numpy as np
+from model import utils
+
+
+class Dense:
+    def __init__(self, input_size, output_size):
+        """
+        Class for dense layer
+        :param input_size:
+        :param output_size:
+        """
+        self.input = None
+        self.z = None
+        self.input_size = input_size
+        self.output_size = output_size
+        self.weights = np.random.randn(input_size[1], output_size) * np.sqrt(2.0 / input_size[1])
+        self.biases = np.zeros(output_size)
+
+    def forward(self, x):
+        """
+        Forward pass of the dense layer
+        :param x:
+        :return:
+        """
+        self.input = x
+        output = np.dot(x, self.weights) + self.biases
+        self.z = utils.softmax(output)
+        return self.z
+
+    def backward(self, grad, learning_rate=0.01):
+        """
+        Backward pass of the dense layer
+        :param grad: gradient from downstream layers
+        :param learning_rate:
+        :return:
+        """
+        dw = np.dot(self.input.T, grad)
+        db = np.sum(grad, axis=0)
+        d_next = np.dot(grad, self.weights.T)
+
+        self.weights -= learning_rate * dw
+        self.biases -= learning_rate * db
+        return d_next
+
+
+import numpy as np
+
+
+class Recurrent:
+    def __init__(self, input_size, hidden_size):
+        self.input_size = input_size[0]
+        self.hidden_size = hidden_size[0]
+        self.output_size = 1
+        self.weights_x = np.random.randn(input_size[0], 1) * np.sqrt(2.0 / input_size[0])
+        self.weights_h = np.random.randn(input_size[0], 1) * np.sqrt(2.0 / input_size[0])
+        self.b = np.zeros((hidden_size[0], 1))
+        self.inputs = []
+        self.outputs = []
+        self.h = []
+
+    def forward(self, x):
+        """
+        Forward pass of the recurrent layer.
+        :param x:
+        :return:
+        """
+        T = len(x)
+        self.inputs = x
+        self.outputs = []
+        self.h = np.zeros((self.hidden_size+1, 1))
+        for t in range(1, T+1):
+            h_t = np.dot(self.weights_x[t-1], x[t-1]) + np.dot(self.weights_h[t-1], self.h[t-1]) + self.b[t-1]
+            self.outputs.append(np.tanh(h_t))
+            self.h[t] = h_t
+        self.outputs.append(self.outputs[-1])
+        return np.array(self.outputs[1:])
+
+    def backward(self, grad, learning_rate=0.01):
+        """
+        Backward(BPTT) pass of the dense layer
+        :param grad: gradient from downstream layers
+        :param learning_rate:
+        :return:
+        """
+        T = len(self.inputs)
+        grad_weights_x = np.zeros_like(self.weights_x)
+        grad_weights_h = np.zeros_like(self.weights_h)
+        grad_b = np.zeros_like(self.b)
+        grad_h_next = np.zeros((1, 1))
+        for t in reversed(range(T)):
+            grad_output = grad[t]
+            grad_h_t = grad_output * (1 - self.outputs[t] ** 2) + grad_h_next
+            grad_b += grad_h_t
+            grad_weights_x[t] = np.dot(grad_h_t, self.inputs[t])
+            grad_weights_h[t] = np.dot(grad_h_t.T, self.h[t])
+
+        np.clip(grad_weights_x, -0.001, 0.001)
+        np.clip(grad_weights_h, -0.001, 0.001)
+        np.clip(grad_b, -0.001, 0.001)
+        self.weights_x -= learning_rate * grad_weights_x/T
+        self.weights_h -= learning_rate * grad_weights_h/T
+        self.b -= learning_rate * grad_b/T

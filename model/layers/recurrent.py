@@ -14,6 +14,11 @@ class Recurrent:
         self.h = []
 
     def forward(self, x):
+        """
+        Forward pass of the recurrent layer.
+        :param x:
+        :return:
+        """
         T = len(x)
         self.inputs = x
         self.outputs = []
@@ -26,6 +31,12 @@ class Recurrent:
         return np.array(self.outputs[1:])
 
     def backward(self, grad, learning_rate=0.01):
+        """
+        Backward(BPTT) pass of the dense layer
+        :param grad: gradient from downstream layers
+        :param learning_rate:
+        :return:
+        """
         T = len(self.inputs)
         grad_weights_x = np.zeros_like(self.weights_x)
         grad_weights_h = np.zeros_like(self.weights_h)
@@ -38,9 +49,9 @@ class Recurrent:
             grad_weights_x[t] = np.dot(grad_h_t, self.inputs[t])
             grad_weights_h[t] = np.dot(grad_h_t.T, self.h[t])
 
-        np.clip(grad_weights_x, -0.00001, 0.00001)
-        np.clip(grad_weights_h, -0.00001, 0.00001)
-        np.clip(grad_b, -0.00001, 0.00001)
+        np.clip(grad_weights_x, -0.001, 0.001)
+        np.clip(grad_weights_h, -0.001, 0.001)
+        np.clip(grad_b, -0.001, 0.001)
         self.weights_x -= learning_rate * grad_weights_x/T
         self.weights_h -= learning_rate * grad_weights_h/T
         self.b -= learning_rate * grad_b/T

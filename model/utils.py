@@ -2,6 +2,11 @@ import numpy as np
 
 
 def softmax(x):
+    """
+    Compute softmax values for each sets of scores in x.
+    :param x:
+    :return:
+    """
     s = np.max(x, axis=1)
     s = s[:, np.newaxis]
     e_x = np.exp(x - s)
@@ -11,6 +16,12 @@ def softmax(x):
 
 
 def sparse_categorical_crossentropy(y_true, y_pred):
+    """
+    Compute sparse categorical crossentropy loss.
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
     y_pred1 = np.clip(y_pred, 1e-7, 1 - 1e-7)
     y_true1 = np.eye(y_pred.shape[1])[y_true.reshape(-1)]
     cross_entropy = -np.sum(y_true1 * np.log(y_pred1), axis=-1)
@@ -19,6 +30,12 @@ def sparse_categorical_crossentropy(y_true, y_pred):
 
 
 def sparse_categorical_crossentropy_gradient(y_true, y_pred):
+    """
+    Compute gradient of sparse categorical crossentropy loss.
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
     y_pred1 = np.clip(y_pred, 1e-7, 1 - 1e-7)
     y_true1 = np.eye(y_pred.shape[1])[y_true.reshape(-1)]
     gradients = y_pred1 - y_true1
@@ -26,6 +43,12 @@ def sparse_categorical_crossentropy_gradient(y_true, y_pred):
 
 
 def sparse_categorical_accuracy(y_true, y_pred):
+    """
+    Compute sparse categorical accuracy.
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
     y_pred_classes = np.argmax(y_pred, axis=1)
     correct_predictions = np.equal(y_true, y_pred_classes)
     accuracy = np.mean(correct_predictions)

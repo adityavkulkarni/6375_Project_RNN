@@ -14,12 +14,14 @@ if __name__ == '__main__':
     parser.add_argument('--learning-rate', type=float,
                         help='Learning rate for model', default=0.001)
     parser.add_argument('--epochs', type=int,
-                        help='Epochs for model', default=50)
+                        help='Epochs for model', default=100)
+    parser.add_argument('--samples', type=int,
+                        help='Number of sentences for training', default=1000)
     args = parser.parse_args()
 
     if not os.path.exists(DATA_PATH):
         urllib.request.urlretrieve(DATA_URL, DATA_PATH)
-    data_processor = DataProcessor(DATA_PATH, sentence_count=1000)
+    data_processor = DataProcessor(DATA_PATH, sentence_count=args.samples)
     index = 10
     eng_sentence = data_processor.english_sentences[index]
     spa_sentence = data_processor.spanish_sentences[index]

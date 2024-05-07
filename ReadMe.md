@@ -26,6 +26,7 @@ ___
 - [data](data): directory for datasets 
 - [rnn_benchmark.py](rnn_benchmark.py) : Keras model used for benchmarking
 - [main.py](main.py) : main file 
+- [data_processor.py](data_processor.py): file containing class for data preprocessing
 - [model](model): directory containing RNN code
   - [layers](model/layers): directory containing code for each layer
     - [dense.py](model/layers/dense.py): file containing dense layer
