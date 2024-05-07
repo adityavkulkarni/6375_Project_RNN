@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     if not os.path.exists(DATA_PATH):
         urllib.request.urlretrieve(DATA_URL, DATA_PATH)
-    data_processor = DataProcessor(DATA_PATH, sentence_count=5000)
+    data_processor = DataProcessor(DATA_PATH, sentence_count=1000)
     index = 10
     eng_sentence = data_processor.english_sentences[index]
     spa_sentence = data_processor.spanish_sentences[index]

@@ -38,13 +38,11 @@ class RNN:
             scce = SparseCategoricalCrossentropy()
             err = scce(y_test, _y)
             acc = m.result()
-            results.append((epoch+1, float(acc), float(err)))
             graph.append((epoch+1, float(err)))
-            print(f"epoch: {epoch + 1} Loss: {err} Accuracy: {acc}")
-
-        pd.DataFrame(results, columns=["Epochs", "Accuracy", "Error"]).to_csv(f'results/rnn_{learning_rate}.csv',
-                                                                              index=False)
+            print(f"epoch: {epoch + 1} Loss: {err}")
+        print(f"Accuracy: {acc}")
         df = pd.DataFrame(graph, columns=["Epochs", "Validation loss"])
+        df.to_csv(f'results/rnn_{learning_rate}.csv', index=False)
         fig1 = plt.figure(figsize=(12, 7))
         ax = fig1.add_subplot(1, 1, 1)
         ax.plot(df["Epochs"], df["Validation loss"])

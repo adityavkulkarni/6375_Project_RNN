@@ -6,13 +6,15 @@ from keras.preprocessing.sequence import pad_sequences
 
 
 class DataProcessor:
-    def __init__(self, data_file, sentence_count=1000, offset=20000):
+    def __init__(self, data_file, sentence_count=1000):
         with open(data_file, "r", encoding='utf-8') as f:
             raw = f.read()
         self.max_sentence_length = 10
         raw_data = list(set(raw.split('\n')))
         pairs = [sentence.split('\t') for sentence in raw_data]
-        pairs = pairs[offset: offset + sentence_count]
+        pairs = [[x[0], x[1]] for x in pairs if 4 < len(x[0].split()) < 12]
+        pairs = sorted(pairs, key=lambda x: len(x[1]))
+        pairs = pairs[:sentence_count]
 
         self.english_sentences = [re.sub('[^A-Za-z0-9 ]+', '', pair[0].lower()) for pair in pairs]
         self.spanish_sentences = [re.sub('[^A-Za-z0-9 ]+', '', pair[1].lower()) for pair in pairs]
