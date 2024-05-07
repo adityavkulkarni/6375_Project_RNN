@@ -18,9 +18,9 @@ class RNNBenchmark:
         self._model.compile(loss=sparse_categorical_crossentropy,
                             metrics=['sparse_categorical_accuracy'])
         self._model.summary()
-        keras.utils.plot_model(
+        """keras.utils.plot_model(
             self._model, show_shapes=True, show_layer_names=True,
-            to_file="model.png")
+            to_file="model.png")"""
 
     def train(self, x, y, epochs=10):
         """
